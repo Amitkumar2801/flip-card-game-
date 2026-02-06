@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ameero Ka Store 🤑</title>
+  <link rel="icon" href="GAME LOGO.jpeg" type="image/jpeg">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial Black', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a1a 0%, #330000 100%);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: #80011f;
+      padding: 15px;
+      border-radius: 15px;
+      border: 3px solid #ffd700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-bottom: 30px;
+    }
+
+    .title {
+      text-align: center;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .title h1 {
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      color: #ffd700;
+      text-shadow: 3px 3px 0 #000;
+      margin-bottom: 5px;
+    }
+
+    .title p {
+      font-size: 0.9rem;
+      color: #ddd;
+      font-style: italic;
+      margin: 0;
+    }
+
+    .balance {
+      font-size: 1.2rem;
+      background: #000;
+      padding: 10px 15px;
+      border-radius: 10px;
+      border: 2px solid #ffd700;
+      color: #ffd700;
+      white-space: nowrap;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .back-btn {
+      text-decoration: none;
+      background: white;
+      color: #80011f;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      border: 2px solid #80011f;
+      font-size: 0.9rem;
+      transition: transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .store-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .item-card {
+      background: #222;
+      width: 100%;
+      max-width: 300px; /* Mobile par full width, laptop par 300px */
+      border-radius: 15px;
+      overflow: hidden;
+      border: 2px solid #444;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+
+    .item-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .item-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 2px solid #444;
+    }
+
+    .item-info {
+      padding: 20px;
+    }
+
+    .item-name {
+      font-size: 1.4rem;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .item-desc {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 15px;
+      font-weight: normal;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      color: #ffd700;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .buy-btn {
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      color: white;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: 0.2s;
+    }
+
+    .buy-btn:hover {
+      background: #218838;
+      transform: scale(1.05);
+    }
+
+    .buy-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #222;
+      padding: 30px;
+      border: 3px solid #ffd700;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Ticket/ATM Card Styles */
+    .ticket-card {
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      width: 100%;
+      max-width: 380px;
+      height: 240px;
+      border-radius: 15px;
+      color: white;
+      padding: 25px;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.1);
+      text-align: left;
+    }
+
+    .card-chip {
+      width: 50px;
+      height: 35px;
+      background: linear-gradient(135deg, #d4af37 0%, #f9d976 100%);
+      border-radius: 6px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    
+    .card-chip::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0; width: 100%; height: 1px; background: rgba(0,0,0,0.2);
+    }
+
+    .ticket-meme {
+      font-size: 0.95rem;
+      color: #ffd700;
+      margin: 10px 0;
+      font-style: italic;
+      text-align: center;
+      line-height: 1.4;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .card-number {
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 2px black;
+    }
+
+    .qr-code {
+      position: absolute;
+      top: 65px;
+      right: 25px;
+      width: 60px;
+      height: 60px;
+      background: white;
+      padding: 3px;
+      border-radius: 5px;
+    }
+
+    /* --- Mobile Responsive Styles --- */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        padding: 15px 10px;
+      }
+      .title {
+        order: 1;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      .balance {
+        order: 2;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+        padding: 12px;
+      }
+      .nav-buttons {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+      }
+      .back-btn {
+        flex: 1;
+        padding: 10px 5px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+      .title h1 {
+        font-size: 1.8rem;
+      }
+      .store-grid {
+        gap: 15px;
+        padding: 0 10px;
+      }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+      80% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .pop-animation {
+      animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem('playerName')) {
+      alert("You need to log in first!");
+      window.location.href = "index.html";
+    }
+  </script>
+
+  <div class="header">
+    <div class="nav-buttons">
+      <button onclick="showInventory()" class="back-btn" style="cursor: pointer;">🎒 Inventory</button>
+      <button onclick="enterCheatCode()" class="back-btn" style="cursor: pointer; background: #6f42c1; color: white; border-color: #5a32a3;">💻 Cheat</button>
+      <button onclick="openAdminPanel()" class="back-btn" style="cursor: pointer; background: #343a40; color: white; border-color: #23272b;">🛠 Admin</button>
+    </div>
+    <div class="title">
+      <h1>👑 Ameero Ka Store 👑</h1>
+      <p>"Hai dum toh kharid ke dikhao!"</p>
+    </div>
+    <div class="balance">Jeb mein: <span id="userScore">0</span> 🪙</div>
+  </div>
+
+  <div class="store-grid">
+    
+
+    <!-- Item: Car Parking Project -->
+    <div class="item-card">
+      <img src="CAR PARKING.png" class="item-img" alt="Car Parking">
+      <div class="item-info">
+        <h3 class="item-name">Car Parking Project</h3>
+        <p class="item-desc">Yahan reservation mat karna, gaadi ke tyres chori ho jayenge! 🚗💨</p>
+        <span class="price">💰 FREE (0 Coins)</span>
+        <button class="buy-btn" onclick="buyItem(0, 'Car Parking Project')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item: Full Day Mess -->
+    <div class="item-card">
+      <img src="FOOD (4).jpeg" class="item-img" alt="Full Mess">
+      <div class="item-info">
+        <h3 class="item-name">Full Day Mess</h3>
+        <p class="item-desc">Subah se shaam tak unlimited access! Uncle ro denge aaj. 🍽️</p>
+        <span class="price">💰 240 Coins</span>
+        <button class="buy-btn" onclick="buyItem(240, 'Full Day Mess')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item 1 -->
+    <div class="item-card">
+      <img src="iphone 17 pro max.jpg.jpeg" class="item-img" alt="iPhone">
+      <div class="item-info">
+        <h3 class="item-name">iPhone 17 Pro Max</h3>
+        <p class="item-desc">Sirf show off karne ke liye. Kidney bachao, game khelo.</p>
+        <span class="price">💰 500 Coins</span>
+        <button class="buy-btn" onclick="buyItem(500, 'iPhone 15 Pro Max')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item 2 -->
+    <div class="item-card">
+      <img src="mustang gt.jpg.jpeg" class="item-img" alt="Mustang">
+      <div class="item-info">
+        <h3 class="item-name">Mustang GT</h3>
+        <p class="item-desc">Vroom Vroom! Ladkiyan impress karne ki machine.</p>
+        <span class="price">💰 2,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(2000, 'Mustang GT')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item 3 -->
+    <div class="item-card">
+      <img src="golden toilet.jpg.jpeg" class="item-img" alt="Gold Toilet">
+      <div class="item-info">
+        <h3 class="item-name">Sone Ka Toilet</h3>
+        <p class="item-desc">Subah ka karyakram ab shahi andaaz mein hoga.</p>
+        <span class="price">💰 5,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(5000, 'Sone Ka Toilet')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item 4 -->
+    <div class="item-card">
+      <img src="ambani antilia.jpg.jpeg" class="item-img" alt="Antilia">
+      <div class="item-info">
+        <h3 class="item-name">Ambani's Antilia</h3>
+        <p class="item-desc">Isme 600 staff free milenge. Bijli bill alag se.</p>
+        <span class="price">💰 10,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(10000, 'Antilia House')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item 5 -->
+    <div class="item-card">
+      <img src="spacex rocket.jpg.jpeg" class="item-img" alt="Rocket">
+      <div class="item-info">
+        <h3 class="item-name">SpaceX Rocket</h3>
+        <p class="item-desc">Mars pe plot katne ke liye. Elon Musk driver free.</p>
+        <span class="price">💰 50,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(50000, 'SpaceX Rocket')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item: Exam Paper -->
+    <div class="item-card">
+      <img src="FOOD (2).jpeg" class="item-img" alt="Exam Paper">
+      <div class="item-info">
+        <h3 class="item-name">Exam Paper</h3>
+        <p class="item-desc">Exam pass karne ka secret formula! Par padhna padega. 📝</p>
+        <span class="price">💰 5,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(5000, 'Exam Paper')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item: Back Bencher Seat -->
+    <div class="item-card">
+      <img src="FOOD (3).jpeg" class="item-img" alt="Back Bencher Seat">
+      <div class="item-info">
+        <h3 class="item-name">Back Bencher Seat</h3>
+        <p class="item-desc">Class ka sabse comfortable spot. Teacher ki nazar se door! 😎</p>
+        <span class="price">💰 150 Coins</span>
+        <button class="buy-btn" onclick="buyItem(150, 'Back Bencher Seat')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Item: Attendance Register -->
+    <div class="item-card">
+      <img src="ATTENDANCE.jpg" class="item-img" alt="Attendance Register">
+      <div class="item-info">
+        <h3 class="item-name">Attendance Register</h3>
+        <p class="item-desc">75% Attendance ka jugad! Proxy lagao, tension bhagao. 📝</p>
+        <span class="price">💰 3,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(3000, 'Attendance Register')">MARK PROXY</button>
+      </div>
+    </div>
+
+    <!-- Mystery Box -->
+    <div class="item-card" style="border: 2px solid #e056fd;">
+      <img src="mystry box.png" class="item-img" alt="Mystery Box">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #e056fd;">Mystery Box 🎁</h3>
+        <p class="item-desc">Kismat azmao! Jackpot, Item ya Khali Dabba?</p>
+        <span class="price">💰 500 Coins</span>
+        <button class="buy-btn" onclick="buyMysteryBox(500)" style="background: #be2edd;">OPEN NOW</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIP Store Section -->
+  <div style="margin-top: 60px; margin-bottom: 30px;">
+    <h2 style="font-size: 2.5rem; color: #e056fd; text-transform: uppercase; text-shadow: 0 0 15px #e056fd;">💎 VIP STORE 💎</h2>
+    <p style="color: #ddd; font-style: italic;">"Sirf unke liye jinke paas andha paisa hai!"</p>
+  </div>
+
+  <div class="store-grid">
+    <!-- Placement Offer -->
+    <div class="item-card" style="border: 2px solid #ffd700;">
+      <img src="placement.jpg" class="item-img" alt="Placement">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ffd700;">Placement Offer</h3>
+        <p class="item-desc">1.5 Cr Package! Google wale ghar se utha ke le jayenge. 💼</p>
+        <span class="price">💰 FREE (0 Coins)</span>
+        <button class="buy-btn" onclick="buyItem(0, 'Placement Offer')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Principal Chair -->
+    <div class="item-card" style="border: 2px solid #ffd700;">
+      <img src="principal.jpg" class="item-img" alt="Principal Chair">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ffd700;">Principal Chair</h3>
+        <p class="item-desc">College ke naye boss! Attendance 100% automatically. 🏛️</p>
+        <span class="price">💰 7,500 Coins</span>
+        <button class="buy-btn" onclick="buyItem(7500, 'Principal Chair')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Topper Brain -->
+    <div class="item-card" style="border: 2px solid #ffd700;">
+      <img src="brain.jpg" class="item-img" alt="Topper Brain">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ffd700;">Topper Brain</h3>
+        <p class="item-desc">Exam mein sab yaad aayega. Cheat sheet ki zarurat nahi! 🧠</p>
+        <span class="price">💰 8,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(8000, 'Topper Brain')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Invisible Cloak -->
+    <div class="item-card" style="border: 2px solid #ffd700;">
+      <img src="INVISIBLE.jpg" class="item-img" alt="Invisible Cloak">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ffd700;">Invisible Cloak</h3>
+        <p class="item-desc">Mr. India ban jao! Girls hostel... I mean, library jao! 👻</p>
+        <span class="price">💰 6,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(6000, 'Invisible Cloak')">BUY NOW</button>
+      </div>
+    </div>
+
+    
+
+    <!-- Time Machine -->
+    <div class="item-card" style="border: 2px solid #ffd700;">
+      <img src="TIME MACHINE.jpg" class="item-img" alt="Time Machine">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ffd700;">Time Machine</h3>
+        <p class="item-desc">Past mein jaake Bitcoin khareed lo! ⏳</p>
+        <span class="price">💰 15,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(15000, 'Time Machine')">BUY NOW</button>
+      </div>
+    </div>
+
+    <!-- Pawan Singh -->
+    <div class="item-card" style="border: 2px solid #ff6b6b;">
+      <img src="PAWAN SINGH.jpg" class="item-img" alt="Pawan Singh">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ff6b6b;">Pawan Singh</h3>
+        <p class="item-desc">Power Star! Lollypop Lagelu. 🎤</p>
+        <span class="price">💰 30,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(30000, 'Pawan Singh')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- MS Dhoni -->
+    <div class="item-card" style="border: 2px solid #00a8ff;">
+      <img src="MS DONI.jpg" class="item-img" alt="MS Dhoni">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #00a8ff;">MS Dhoni</h3>
+        <p class="item-desc">Thala for a reason! Helicopter shot free. 🏏</p>
+        <span class="price">💰 7,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(7000, 'MS Dhoni')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- Virat Kohli -->
+    <div class="item-card" style="border: 2px solid #00a8ff;">
+      <img src="VIRAT KOHLI.jpg" class="item-img" alt="Virat Kohli">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #00a8ff;">Virat Kohli</h3>
+        <p class="item-desc">Aggression level: Infinity. Run machine! 🏏</p>
+        <span class="price">💰 18,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(18000, 'Virat Kohli')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- Rohit Sharma -->
+    <div class="item-card" style="border: 2px solid #00a8ff;">
+      <img src="ROHIT SHARMA.jpg" class="item-img" alt="Rohit Sharma">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #00a8ff;">Rohit Sharma</h3>
+        <p class="item-desc">Vada Pav ki shakti! Double century pakki. 🏏</p>
+        <span class="price">💰 15,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(15000, 'Rohit Sharma')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- Cristiano Ronaldo -->
+    <div class="item-card" style="border: 2px solid #00a8ff;">
+      <img src="ronaldo.jpg" class="item-img" alt="Ronaldo">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #00a8ff;">Cristiano Ronaldo</h3>
+        <p class="item-desc">SIUUU! Goal machine. ⚽</p>
+        <span class="price">💰 70,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(70000, 'Cristiano Ronaldo')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- Lionel Messi -->
+    <div class="item-card" style="border: 2px solid #00a8ff;">
+      <img src="messi.jpg" class="item-img" alt="Messi">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #00a8ff;">Lionel Messi</h3>
+        <p class="item-desc">Ankara Messi! Magic on field. ⚽</p>
+        <span class="price">💰 80,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(80000, 'Lionel Messi')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- Narendra Modi -->
+    <div class="item-card" style="border: 2px solid #ff9f43;">
+      <img src="NARENDRA MODI.jpg" class="item-img" alt="">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ff9f43;">Narendra Modi</h3>
+        <p class="item-desc">Mitron! Acche din aa gaye. 🇮🇳</p>
+        <span class="price">💰 56,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(56000, 'Narendra Modi')">VOTE NOW</button>
+      </div>
+    </div>
+
+    <!-- Shah Rukh Khan -->
+    <div class="item-card" style="border: 2px solid #ff6b6b;">
+      <img src="SARUKHANKHAN.jpg" class="item-img" alt="SRK">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ff6b6b;">Shah Rukh Khan</h3>
+        <p class="item-desc">King Khan! Romance king. 🎬</p>
+        <span class="price">💰 50,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(50000, 'Shah Rukh Khan')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- Salman Khan -->
+    <div class="item-card" style="border: 2px solid #ff6b6b;">
+      <img src="SALMAN KHAN.jpg" class="item-img" alt="Salman Khan">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ff6b6b;">Salman Khan</h3>
+        <p class="item-desc">Bhai ka swag! Driver alag se milega. 🚗</p>
+        <span class="price">💰 40,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(40000, 'Salman Khan')">HIRE NOW</button>
+      </div>
+    </div>
+
+    <!-- Anant Singh -->
+    <div class="item-card" style="border: 2px solid #ff6b6b;">
+      <img src="ANANT SINGH.jpg" class="item-img" alt="Anant Singh">
+      <div class="item-info">
+        <h3 class="item-name" style="color: #ff6b6b;">Anant Singh</h3>
+        <p class="item-desc">Chhote Sarkar! Jail se seedha live. 🔫</p>
+        <span class="price">💰 40,000 Coins</span>
+        <button class="buy-btn" onclick="buyItem(40000, 'Anant Singh')">HIRE NOW</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory Modal -->
+  <div id="inventoryModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h2 style="color: #ffd700; margin-bottom: 20px;">🎒 Aapki Tijori (Inventory)</h2>
+      <ul id="inventoryList" style="list-style: none; padding: 0; text-align: left; color: white; max-height: 60vh; overflow-y: auto; border: 1px solid #444; border-radius: 5px;"></ul>
+      <p id="emptyMsg" style="color: #aaa; display: none; margin-bottom: 20px;">Abhi tak kuch nahi kharida? Kanjoos! 😂</p>
+      <button class="buy-btn" onclick="sellAllInventory()" style="margin-top: 20px; background: #d35400;">💰 Sell All Items</button>
+      <button class="buy-btn" onclick="closeInventory()" style="margin-top: 10px; background: #80011f;">Close</button>
+    </div>
+  </div>
+
+  <!-- ATM Ticket Modal -->
+  <div id="ticketModal" class="modal" style="display: none;">
+    <div id="normalTicket" class="ticket-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <span style="font-weight:bold; font-size:1.1rem;">CHAMGADAR BANK</span>
+        <div class="card-chip"></div>
+      </div>
+      
+      <!-- Rick Roll QR Code -->
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="qr-code" alt="Scan for Surprise">
+
+      <div class="card-number">**** **** **** 8873</div>
+      
+      <div style="text-align: center;">
+        <h3 id="ticketItem" style="color: #fff; margin-bottom: 5px;">Item Name</h3>
+        <p id="ticketMeme" class="ticket-meme">Meme Text Here</p>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+        <div>
+          <span style="font-size:0.7rem; color:#aaa;">PRICE</span><br>
+          <span id="ticketPrice" style="color:#28a745; font-weight:bold;">- 500</span>
+        </div>
+        <button onclick="closeTicket()" style="background: white; color: #333; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer;">COLLECT 🎫</button>
+      </div>
+    </div>
+
+    <!-- VIP Video Player (Hidden by default) -->
+    <div id="vipVideoCard" style="display: none; background: #000; padding: 20px; border: 4px solid #ffd700; border-radius: 15px; text-align: center; width: 90%; max-width: 600px;">
+      <h2 id="videoTitle" style="color: #ffd700; margin-bottom: 15px; text-transform: uppercase;">VIP CELEBRATION 🎉</h2>
+      <!-- Video Frame -->
+      <iframe id="vipVideoFrame" width="100%" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 10px; display:none;"></iframe>
+      <!-- Image for non-video VIP items -->
+      <img id="vipImage" src="" style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 10px; display:none; border: 2px solid #ffd700;" alt="VIP Item">
+      <p id="vipMessage" style="color: #fff; margin-top: 15px; font-size: 1.1rem; font-style: italic;"></p>
+      <button onclick="closeTicket()" style="margin-top: 15px; background: #ff0055; color: white; border: none; padding: 10px 20px; font-size: 1.2rem; cursor: pointer; border-radius: 5px; font-weight: bold;">CLOSE & ENJOY</button>
+    </div>
+  </div>
+
+  <script>
+    // Local Storage se score uthao
+    let score = localStorage.getItem('batScore');
+
+    // Agar pehli baar aaya hai (ya data nahi hai), toh 0 set karo
+    if (score === null) {
+      score = 0;
+      localStorage.setItem('batScore', 0);
+    } else {
+      score = parseInt(score);
+    }
+    document.getElementById('userScore').innerText = score;
+
+    const itemPrices = {
+      'Car Parking Project': 0,
+      'One Time Mess': 80,
+      'Full Day Mess': 240,
+      'iPhone 15 Pro Max': 500,
+      'Mustang GT': 2000,
+      'Sone Ka Toilet': 5000,
+      'Antilia House': 10000,
+      'SpaceX Rocket': 50000,
+      'Exam Paper': 5000,
+      'Back Bencher Seat': 150,
+      'Attendance Register': 3000,
+      'Placement Offer': 0,
+      'Principal Chair': 7500,
+      'Topper Brain': 8000,
+      'Invisible Cloak': 6000,
+      'Direct Degree': 50000,
+      'Time Machine': 15000,
+      'MS Dhoni': 7000,
+      'Virat Kohli': 18000,
+      'Rohit Sharma': 15000,
+      'Cristiano Ronaldo': 70000,
+      'Lionel Messi': 80000,
+      'Narendra Modi': 56000,
+      'Nitish Kumar': 2000,
+      'Lalu Yadav': 3000,
+      'Shah Rukh Khan': 50000,
+      'Salman Khan': 40000,
+      'Pawan Singh': 30000,
+      'Anant Singh': 40000
+    };
+
+    const memes = [
+      "Paisa haath ki mail hai, aaj hai kal nahi! 💸",
+      "Badhai ho! Aapne gareebi ki taraf ek aur kadam badha liya! 📉",
+      "Itna kharcha ho gaya, ab ghar kaise jaoge? 😂",
+      "Shauk badi cheez hai, chahe kidney hi kyu na bik jaye! 😜",
+      "Transaction Successful! Dil pe patthar rakh ke payment kiya na? 🤣",
+      "Ameer log, badi baatein! Hame kya, hum toh fakir aadmi hain. 🎒",
+      "Lo kar lo baat! Itne paise kahan se laate ho bhai? 🤑",
+      "Ab bas, is mahine daal-chawal pe zinda rehna padega! 🍛",
+      "Ye item khareed ke lag raha hai Ambani ban gaye? 😎",
+      "Account balance ro raha hai kone mein baith ke! 😭",
+      "Wah bete! Mauj kardi! Itne paise uda diye! 💃"
+    ];
+
+    const messMemes = [
+      "Aaj toh mess wale uncle ro denge! Itna khayega? 🍛😂",
+      "Pet hai ya kuan? 240 coins ka khana! 🤯",
+      "Full Day Mess? Bhai tu padhne aaya hai ya khane? 🤣",
+      "Bas kar bhai, mess ka rashan khatam karega kya? 🛑",
+      "Badhai ho! Ab hostel ka sabse ameer bhukkad tum ho! 🍔",
+      "Isme daal me paani kam milega kya? 🤔"
+    ];
+
+    const vipMemes = [
+      "Ab toh life set hai boss! 😎",
+      "Principal bhi ab salute karega! 🫡",
+      "Topper ban gaye, ab kya chahiye? 🥇",
+      "Mr. India ban gaye! Mogambo khush hua! 😈",
+      "4 saal ki chutti! Seedha Engineer! 👷‍♂️",
+      "Past me jaake galti sudhar lo! 🔙",
+      "Ee Sala Cup Namde! 🏆",
+      "Chacha Vidhayak hain humare! 🚓",
+      "Picture abhi baaki hai mere dost! 🎬"
+    ];
+
+    function buyItem(price, itemName) {
+      if (score >= price) {
+        score -= price;
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+        
+        // Save to inventory
+        let inventory = JSON.parse(localStorage.getItem('batInventory')) || [];
+        inventory.push(itemName);
+        localStorage.setItem('batInventory', JSON.stringify(inventory));
+
+        // Show ATM Ticket
+        showTicket(itemName, price);
+      } else {
+        // Funny Error Message
+        const insults = [
+          "Oye Garib! Pehle paise kama ke aa! 😂",
+          "Itne paise mein toh chocolate bhi nahi aayegi! 🤣",
+          "Sapne dekhna achi baat hai, par aukaat bhi dekho! 😜",
+          "Udhaar maang ke game khel raha hai kya? Paise la pehle! 🤑"
+        ];
+        const randomInsult = insults[Math.floor(Math.random() * insults.length)];
+        alert(`❌ Transaction Failed!\n\n${randomInsult}`);
+      }
+    }
+
+    function showTicket(itemName, price) {
+      let randomMeme;
+      const vipList = ['Full Day Mess', 'Placement Offer', 'Principal Chair', 'Topper Brain', 'Invisible Cloak', 'Direct Degree', 'Time Machine', 'MS Dhoni', 'Virat Kohli', 'Rohit Sharma', 'Cristiano Ronaldo', 'Lionel Messi', 'Narendra Modi', 'Nitish Kumar', 'Lalu Yadav', 'Shah Rukh Khan', 'Salman Khan', 'Pawan Singh', 'Anant Singh'];
+
+      // Special Logic for Exam Paper
+      if (itemName === 'Car Parking Project') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "PROJECT ROAST! 🔥";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "System Message: WARNING! ⚠️\n\nBhai yahan Reservation mat karna, gaadi ke tyres chori ho jayenge! 🚗💨\n\nIsse achha toh Card Flip kar lo (Game khel lo), kam se kam wahan points toh milenge! 😂\n(Project approved by 'Chor Bazaar Association')";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Exam Paper') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "PADH LO! SEMESTER AA RAHA HAI! 📚";
+        
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Abhi bhi time hai sudhar jao! 😂\n\nPadh lo beta, mauka hai,\nBaaki sab toh dhoka hai! 📖\n\nSemester aa raha hai, back lag gayi toh?\nFir mat bolna bataya nahi tha! 😜";
+        
+        // Styling to fill space and look like a meme
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Back Bencher Seat') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "LAST BENCHERS = LEGENDS! 😎";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Teacher: 'Sabse zyada shor peeche se aa raha hai!' 😡\n\nLe Back Benchers: 'Hum toh bas discuss kar rahe the ki...'\n\n'Exam mein pass kaise hona hai bina padhe!' 😂\n\nFront Benchers: 🤓📚 vs Back Benchers: 👑🔥";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Attendance Register') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "PROXY LAG GAYI! ✅";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Teacher: 'Roll No 49?'\nMe (Normal Voice): 'Present Sir!' 🙋‍♂️\n\nTeacher: 'Roll No 50?'\nMe (Bhaari Aawaz): 'Present Sir!' 🦍\n\nTeacher: 'Roll No 51?'\nMe (Ladki ki Aawaz): 'Present Sir!' 💃\n\nTeacher: 'Beta, Indian Idol ka audition chal raha hai kya?' 🎤😂";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Antilia House') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "AMBANI FEELINGS! 🏠💰";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Congratulations! 🏠\n\nAb tumhare paas 27 floors hain, par rehne wale sirf tum akele! 😂\n\nBijli ka bill bharne ke liye kidney bechni padegi! 💸\n\nStaff: 'Sir, aaj kaunse floor pe sona hai?'\nMe: 'Jahan WiFi full aaye!' 📶🤣";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'SpaceX Rocket') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "MARS MISSION CONFIRMED! 🚀";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Elon Musk: 'Welcome aboard!' 👽\n\nEarth pe toh waise bhi kuch nahi rakha.\nMars pe aloo ugayenge! 🥔\n\nOne Way Ticket hai, wapas aane ka sochna bhi mat! 😂";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Placement Offer') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "1.5 CR PACKAGE! 💼";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Google: 'Welcome Sir!' 🤝\n\nRishtedaar: 'Humara ladka toh heera hai!' 💎\n\nReality: Sapne se jaag jao, assignment complete karo! 😴😂\n\n(Fake Offer Letter Printed Successfully) 🖨️";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Principal Chair') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "POWER TRANSFER! 🏛️";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Aaj se college humara hai! 📢\n\nRule No. 1: Attendance Optional.\nRule No. 2: Canteen Free.\n\nPrincipal Sir: 'Meri kursi gayi!' 😂\n\n(Bas pakde mat jana!) 🏃‍♂️";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Topper Brain') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "BRAIN TRANSPLANT COMPLETE! 🧠";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "System Update: Topper Mode Activated! 🤓\n\nAb teacher ke joke pe bhi hansi aayegi.\n\nRaat ko 2 baje tak padhai? Nahi bhai, PUBG khelenge! 😂\n\n(Exam me sab bhool jaoge!) 📉";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Invisible Cloak') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "MR. INDIA MODE ON! 👻";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Ab class bunk karo, koi nahi dekhega! 🕶️\n\nGirls Hostel ke aas paas mat bhatakna, pitayi invisible nahi hogi! 👊😂\n\nMogambo khush hua! 😈";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Direct Degree') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "CONVOCATION READY! 🎓";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Mubarak ho! Aap Engineer ban gaye! 👷‍♂️\n\nAb job dhundne ki acting shuru karo.\n\nDegree toh mil gayi, par knowledge? Wo toh option mein tha! 🤣\n\n(Frame karwa lo!) 🖼️";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      } else if (itemName === 'Time Machine') {
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('vipVideoCard').classList.add('pop-animation');
+        document.getElementById('videoTitle').innerText = "TIME TRAVEL SUCCESSFUL! ⏳";
+
+        const msgElement = document.getElementById('vipMessage');
+        msgElement.innerText = "Wapas 1st Year mein aa gaye! 🔙\n\nAb starting se padhai karunga... aisa sochna bhi mat! 😂\n\nHistory repeat hogi, back wapas aayegi! 🔄\n\n(Doraemon se udhaar liya hai!) 🤖";
+        
+        msgElement.style.fontSize = "1.3rem";
+        msgElement.style.color = "#ffd700";
+        msgElement.style.padding = "40px 20px";
+        msgElement.style.border = "2px dashed white";
+        msgElement.style.borderRadius = "10px";
+        msgElement.style.background = "#222";
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        videoFrame.style.display = 'none';
+        vipImage.style.display = 'none';
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return;
+      }
+
+      if (itemName.includes("Mess")) {
+        randomMeme = messMemes[Math.floor(Math.random() * messMemes.length)];
+      } else if (vipList.includes(itemName)) {
+        randomMeme = vipMemes[Math.floor(Math.random() * vipMemes.length)];
+      } else {
+        randomMeme = memes[Math.floor(Math.random() * memes.length)];
+      }
+
+      // QR Code Logic
+      let qrUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Default (Rick Roll)
+      if (itemName === 'Full Day Mess') {
+        qrUrl = "FOOD (1).jpeg";
+      } else if (itemName === 'iPhone 15 Pro Max') {
+        qrUrl = "https://youtu.be/h6CwwHyQxKI";
+      } else if (itemName === 'Mustang GT') {
+        qrUrl = "https://youtube.com/shorts/EYl5KTSgwUg?si=3QYgAv_Y_uAJ3wRw";
+      } else if (itemName === 'Exam Paper') {
+        qrUrl = "https://www.youtube.com/shorts/SXHMnicI6Pg"; // Padh le bhai meme
+      } else if (itemName === 'Back Bencher Seat') {
+        qrUrl = "https://www.youtube.com/shorts/uD4izuDMUQA"; // Funny sleeping video
+      } else if (itemName === 'Sone Ka Toilet') {
+        qrUrl = "https://youtube.com/shorts/VXW-1UaHTCY?si=Pqtr9XDJjkywO7Xi";
+      } else if (itemName === 'Placement Offer') {
+        qrUrl = "https://www.youtube.com/shorts/ETxmCCsMoD0"; // Money Money Money
+      } else if (itemName === 'Direct Degree') {
+        qrUrl = "https://www.youtube.com/shorts/SXHMnicI6Pg"; // Celebration
+      } else if (itemName === 'Time Machine') {
+        qrUrl = "https://www.youtube.com/shorts/M5V_IXMewl4"; // Running/Time
+      } else if (itemName === 'MS Dhoni') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Bole jo koyal
+      } else if (itemName === 'Virat Kohli') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Aggression
+      } else if (itemName === 'Rohit Sharma') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Vada pav funny
+      } else if (itemName === 'Cristiano Ronaldo') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // SIUUU
+      } else if (itemName === 'Lionel Messi') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Ankara Messi
+      } else if (itemName === 'Narendra Modi') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Mitron
+      } else if (itemName === 'Nitish Kumar') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Palat
+      } else if (itemName === 'Lalu Yadav') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Samosa Aloo
+      } else if (itemName === 'Shah Rukh Khan') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // SRK Pose
+      } else if (itemName === 'Salman Khan') {
+        qrUrl = "https://www.youtube.com/shorts/z8Z_k8_k8_k"; // Swag
+      }
+
+      // --- VIP VIDEO LOGIC ---
+      // Yahan aap apne manpasand video links daal sakte hain (YouTube Embed Link use karein)
+      const vipVideoLinks = {
+        'iPhone 15 Pro Max': 'https://www.youtube.com/embed/h6CwwHyQxKI?autoplay=1',
+        'Pawan Singh': 'https://www.youtube.com/embed/1pkOGX6Pqyw?autoplay=1', // Replace VIDEO_ID_HERE with actual ID
+        'Salman Khan': 'https://www.youtube.com/embed/2wEEv9rF3N4?autoplay=1',
+        'Shah Rukh Khan': 'https://www.youtube.com/embed/2QTXlrOeMUY?autoplay=1',
+        'MS Dhoni': 'https://www.youtube.com/embed/PH5SiuvTcGE?autoplay=1',
+        'Virat Kohli': 'https://www.youtube.com/embed/GdkUAEsCi3w?autoplay=1',
+        'Rohit Sharma': 'https://www.youtube.com/embed/LfOBvXu6rKg?autoplay=1',
+        'Lalu Yadav': 'https://www.youtube.com/embed/MjhKqnYhAPM?autoplay=1',
+        'Narendra Modi': 'https://www.youtube.com/embed/3wK2scrvwjM?autoplay=1',
+        'Nitish Kumar': 'https://www.youtube.com/embed/DCcuxQhyM0I?autoplay=1',
+        'Anant Singh': 'https://www.youtube.com/embed/Colp_U-ErnM?autoplay=1',
+        'Cristiano Ronaldo': 'https://www.youtube.com/embed/igi62kCPt2A?autoplay=1',
+        'Lionel Messi': 'https://www.youtube.com/embed/M5fOaBn2gcg?autoplay=1'
+        // Aur bhi add kar sakte hain...
+      };
+
+      // --- VIP SPECIAL DISPLAY LOGIC ---
+      if (vipList.includes(itemName)) {
+        // VIP Items ke liye ATM Card mat dikhao, Special Box dikhao
+        document.getElementById('normalTicket').style.display = 'none';
+        document.getElementById('vipVideoCard').style.display = 'block';
+        document.getElementById('videoTitle').innerText = "👑 VIP PURCHASE: " + itemName;
+        document.getElementById('vipMessage').style.display = 'none'; // Message hide kar diya
+
+        const videoFrame = document.getElementById('vipVideoFrame');
+        const vipImage = document.getElementById('vipImage');
+
+        if (vipVideoLinks[itemName]) {
+          videoFrame.style.display = 'block';
+          vipImage.style.display = 'none';
+          videoFrame.src = vipVideoLinks[itemName];
+        } else {
+          videoFrame.style.display = 'none';
+          vipImage.style.display = 'block';
+          if (itemName === 'Full Day Mess') {
+            vipImage.src = "FOOD (1).jpeg";
+          } else {
+            vipImage.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(itemName)}`;
+          }
+        }
+
+        document.getElementById('ticketModal').style.display = 'flex';
+        return; // Normal ticket logic skip karo
+      }
+      
+      // Agar video nahi hai, toh normal ticket dikhao
+      document.getElementById('normalTicket').style.display = 'flex'; // Flex wapas lao
+      document.getElementById('vipVideoCard').style.display = 'none';
+      document.getElementById('vipVideoFrame').src = ""; // Stop video if any
+
+      // Normal QR Logic
+      const qrImg = document.querySelector('.qr-code');
+      if (qrImg) qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrUrl)}`;
+
+      document.getElementById('ticketItem').innerText = itemName;
+      document.getElementById('ticketPrice').innerText = `- ${price} Coins`;
+      document.getElementById('ticketMeme').innerText = randomMeme;
+      document.getElementById('ticketModal').style.display = 'flex';
+    }
+
+    function closeTicket() {
+      document.getElementById('ticketModal').style.display = 'none';
+      document.getElementById('vipVideoFrame').src = ""; // Video stop karne ke liye
+      document.getElementById('vipVideoCard').classList.remove('pop-animation');
+      
+      // Reset styles for vipMessage
+      const msgElement = document.getElementById('vipMessage');
+      msgElement.style.cssText = "color: #fff; margin-top: 15px; font-size: 1.1rem; font-style: italic;";
+    }
+
+    function showInventory() {
+      const inventory = JSON.parse(localStorage.getItem('batInventory')) || [];
+      const list = document.getElementById('inventoryList');
+      const emptyMsg = document.getElementById('emptyMsg');
+      
+      list.innerHTML = '';
+      
+      if (inventory.length === 0) {
+        emptyMsg.style.display = 'block';
+      } else {
+        emptyMsg.style.display = 'none';
+        inventory.forEach((item, index) => {
+          const li = document.createElement('li');
+          li.style.padding = '10px';
+          li.style.borderBottom = '1px solid #444';
+          li.style.fontSize = '1.1rem';
+          li.style.display = 'flex';
+          li.style.justifyContent = 'space-between';
+          li.style.alignItems = 'center';
+
+          const span = document.createElement('span');
+          span.innerText = '✅ ' + item;
+
+          const sellBtn = document.createElement('button');
+          const price = itemPrices[item] || 0;
+          const sellPrice = price / 2;
+          sellBtn.innerText = `💰 Sell (+${sellPrice})`;
+          sellBtn.style.background = '#d9534f';
+          sellBtn.style.color = 'white';
+          sellBtn.style.border = 'none';
+          sellBtn.style.padding = '5px 10px';
+          sellBtn.style.borderRadius = '5px';
+          sellBtn.style.cursor = 'pointer';
+          sellBtn.style.fontSize = '0.9rem';
+          sellBtn.onclick = () => sellItem(index, item, sellPrice);
+
+          li.appendChild(span);
+          li.appendChild(sellBtn);
+          list.appendChild(li);
+        });
+      }
+      
+      document.getElementById('inventoryModal').style.display = 'flex';
+    }
+
+    function sellItem(index, itemName, sellPrice) {
+      if (confirm(`Kya aap sach mein "${itemName}" bechna chahte hain? \n\nAapko wapas ${sellPrice} coins milenge.`)) {
+        let inventory = JSON.parse(localStorage.getItem('batInventory')) || [];
+        inventory.splice(index, 1);
+        localStorage.setItem('batInventory', JSON.stringify(inventory));
+
+        score += sellPrice;
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+        
+        showInventory(); // Refresh list
+      }
+    }
+
+    function sellAllInventory() {
+      let inventory = JSON.parse(localStorage.getItem('batInventory')) || [];
+      
+      if (inventory.length === 0) {
+        alert("Bechne ke liye kuch hona bhi toh chahiye! 🤷‍♂️");
+        return;
+      }
+
+      let totalReturn = 0;
+      inventory.forEach(item => {
+        totalReturn += (itemPrices[item] || 0) / 2;
+      });
+
+      if (confirm(`Kya aap sach mein SAARA SAMAAN bechna chahte hain? 😱\n\nTotal Items: ${inventory.length}\nTotal Wapas Milenge: ${totalReturn} Coins 💰`)) {
+        score += totalReturn;
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+        localStorage.setItem('batInventory', JSON.stringify([]));
+        showInventory();
+        alert(`Sab bik gaya! Ameer ho gaye wapas! 🤑 (+${totalReturn} Coins)`);
+      }
+    }
+
+    function closeInventory() {
+      document.getElementById('inventoryModal').style.display = 'none';
+    }
+
+    function buyMysteryBox(price) {
+      if (score >= price) {
+        score -= price;
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+
+        const rand = Math.random();
+        let msg = "";
+
+        if (rand < 0.15) { // 15% Jackpot
+          score += 5000;
+          msg = "JACKPOT! 🎰 5000 Coins mile! Party shuru karo! 🥳";
+        } else if (rand < 0.35) { // 20% Medium Win
+          score += 1000;
+          msg = "Badhiya! 1000 Coins mile. Profit hi profit! 🤑";
+        } else if (rand < 0.50) { // 15% Item Win
+          let inventory = JSON.parse(localStorage.getItem('batInventory')) || [];
+          inventory.push('iPhone 15 Pro Max');
+          localStorage.setItem('batInventory', JSON.stringify(inventory));
+          msg = "Lucky! iPhone 15 Pro Max nikla! 📱";
+        } else if (rand < 0.80) { // 30% Small Loss
+          score += 200;
+          msg = "Oof! Sirf 200 Coins wapas mile. 300 ka ghata! 📉";
+        } else { // 20% Total Loss
+          msg = "Khali Dabba! 📦 Better luck next time! 😂";
+        }
+
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+        alert(`🎁 Mystery Box Opened!\n\n${msg}`);
+      } else {
+        alert("Paisa nahi hai Mystery Box ke liye! 500 Coins chahiye.");
+      }
+    }
+
+    function enterCheatCode() {
+      const code = prompt("Enter Secret Cheat Code:");
+      if (code && code.toUpperCase() === "AMEER") {
+        score += 50000;
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+        alert("Cheat Activated! +50,000 Coins 💰");
+      } else if (code && code.toUpperCase() === "CHAMGADAR") {
+        score = 999999999;
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+        alert("🦇 CHAMGADAR MODE ACTIVATED! Unlimited Wealth! 🦇");
+      } else if (code && code.toUpperCase() === "GARIB") {
+        score = 0;
+        localStorage.setItem('batScore', score);
+        document.getElementById('userScore').innerText = score;
+        alert("Back to Zero! Ab mehnat karo! 😭");
+      } else {
+        alert("Invalid Code! ❌ (Try 'AMEER')");
+      }
+    }
+
+    function openAdminPanel() {
+      const password = prompt("Enter Admin Password:");
+      if (password === "SANAMIT") {
+        const amount = prompt("Admin Panel:\nHow many coins do you want?");
+        if (amount && !isNaN(amount)) {
+            score += parseInt(amount);
+            localStorage.setItem('batScore', score);
+            document.getElementById('userScore').innerText = score;
+            alert(`Admin: Added ${amount} Coins!`);
+        }
+      } else {
+        const audio = new Audio('KON HAI RE.mpeg');
+        audio.play();
+        alert("Access Denied! 🔒");
+      }
+    }
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "Chamgadar Memory Game",
+  "short_name": "Chamgadar",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#9e9a8d",
+  "theme_color": "#80011f",
+  "icons": [
+    {
+      "src": "GAME LOGO.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "GAME LOGO.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
